@@ -31,6 +31,11 @@ class Database {
         return $stmt->fetchAll();
     }
 
+    public function execute($sql, $params = []) {
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute($params);
+    }
+
     public function insert($table, $data) {
         $columns = array_keys($data);
         $placeholders = array_map(fn($column) => ':' . $column, $columns);
@@ -44,5 +49,24 @@ class Database {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return (int)$stmt->fetchColumn();
+    }
+
+    public function beginTransaction() {
+        return $this->pdo->beginTransaction();
+    }
+
+    public function commit() {
+        return $this->pdo->commit();
+    }
+
+    public function rollBack() {
+        if ($this->pdo->inTransaction()) {
+            return $this->pdo->rollBack();
+        }
+        return false;
+    }
+
+    public function inTransaction() {
+        return $this->pdo->inTransaction();
     }
 }
