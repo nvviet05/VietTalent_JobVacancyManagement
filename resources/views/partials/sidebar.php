@@ -8,13 +8,14 @@
     </div>
     <nav class="sidebar-nav">
         <?php if (($role ?? '') === 'admin'): ?>
-            <a class="active" href="<?= url('admin_dashboard') ?>"><?= e(t('admin_dashboard')) ?></a>
+            <a class="<?= ($activeNav ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= url('admin_dashboard') ?>"><?= e(t('admin_dashboard')) ?></a>
             <span><?= e(t('admin_phase_note')) ?></span>
         <?php elseif (($role ?? '') === 'employer'): ?>
-            <a class="active" href="<?= url('employer_dashboard') ?>"><?= e(t('employer_dashboard')) ?></a>
-            <span><?= e(t('employer_phase_note')) ?></span>
+            <a class="<?= ($activeNav ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= url('employer_dashboard') ?>"><?= e(t('employer_dashboard')) ?></a>
+            <a class="<?= ($activeNav ?? '') === 'jobs' ? 'active' : '' ?>" href="<?= url('employer_jobs') ?>"><?= e(t('my_job_postings')) ?></a>
+            <a class="<?= ($activeNav ?? '') === 'create_job' ? 'active' : '' ?>" href="<?= url('employer_job_create') ?>"><?= e(t('create_new_job')) ?></a>
         <?php else: ?>
-            <a class="active" href="<?= url('job_seeker_dashboard') ?>"><?= e(t('job_seeker_dashboard')) ?></a>
+            <a class="<?= ($activeNav ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= url('job_seeker_dashboard') ?>"><?= e(t('job_seeker_dashboard')) ?></a>
             <span><?= e(t('job_seeker_phase_note')) ?></span>
         <?php endif; ?>
         <a href="<?= url('home') ?>"><?= e(t('back_to_site')) ?></a>

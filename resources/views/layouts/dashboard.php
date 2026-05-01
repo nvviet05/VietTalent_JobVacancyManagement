@@ -6,6 +6,9 @@
     <title><?= e($title ?? t('dashboard')) ?> - <?= APP_NAME ?></title>
     <link rel="stylesheet" href="<?= asset('css/main.css') ?>">
     <link rel="stylesheet" href="<?= asset('css/dashboard.css') ?>">
+    <?php foreach (($styles ?? []) as $style): ?>
+        <link rel="stylesheet" href="<?= asset($style) ?>">
+    <?php endforeach; ?>
 </head>
 <body class="dashboard-body">
     <div class="dashboard-layout">
@@ -15,7 +18,7 @@
                 <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Toggle sidebar">☰</button>
                 <div>
                     <h1><?= e($title) ?></h1>
-                    <p><?= e(t('dashboard_subtitle')) ?></p>
+                    <p><?= e($subtitle ?? t('dashboard_subtitle')) ?></p>
                 </div>
                 <div class="topbar-user">
                     <?php include APP_ROOT . '/resources/views/partials/language-switcher.php'; ?>
@@ -30,5 +33,8 @@
         </div>
     </div>
     <script src="<?= asset('js/main.js') ?>"></script>
+    <?php foreach (($scripts ?? []) as $script): ?>
+        <script src="<?= asset($script) ?>"></script>
+    <?php endforeach; ?>
 </body>
 </html>
