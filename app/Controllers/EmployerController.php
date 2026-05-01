@@ -301,8 +301,9 @@ class EmployerController extends Controller {
     }
 
     private function denyJobAccess() {
-        $this->setFlash('error', t('job_permission_denied'));
         http_response_code(403);
+        $errorTitle = t('error_403_title');
+        $errorMessage = t('job_permission_denied');
         require APP_ROOT . '/resources/views/errors/403.php';
         exit;
     }
@@ -386,7 +387,7 @@ class EmployerController extends Controller {
             'employment_type_id' => $this->normalizeId($input['employment_type_id'] ?? null),
             'industry_id' => $this->normalizeId($input['industry_id'] ?? null),
             'job_level_id' => $this->normalizeId($input['job_level_id'] ?? null),
-            'number_of_openings' => isset($input['number_of_openings']) ? trim((string)$input['number_of_openings']) : '',
+            'number_of_openings' => $this->normalizeOpenings($input['number_of_openings'] ?? null),
             'country_id' => $this->normalizeId($input['country_id'] ?? null),
             'city_id' => $this->normalizeId($input['city_id'] ?? null),
             'district_id' => $this->normalizeId($input['district_id'] ?? null),
@@ -441,10 +442,8 @@ class EmployerController extends Controller {
 
         if ($payload['number_of_openings'] === '') {
             $errors['number_of_openings'] = t('validation_required_prefix') . t('number_of_openings') . t('validation_required_suffix');
-        } elseif (!ctype_digit($payload['number_of_openings']) || (int)$payload['number_of_openings'] < 1) {
+        } elseif (!is_int($payload['number_of_openings']) || $payload['number_of_openings'] < 1) {
             $errors['number_of_openings'] = t('validation_openings_min');
-        } else {
-            $payload['number_of_openings'] = (int)$payload['number_of_openings'];
         }
 
         $activeMap = [
@@ -521,5 +520,14 @@ class EmployerController extends Controller {
         }
 
         return ctype_digit((string)$value) ? (int)$value : null;
+    }
+
+    private function normalizeOpenings($value) {
+        $value = trim((string)($value ?? ''));
+        if ($value === '') {
+            return '';
+        }
+
+        return ctype_digit($value) ? (int)$value : $value;
     }
 }

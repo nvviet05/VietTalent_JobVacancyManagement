@@ -179,6 +179,9 @@ function t($key) {
             'validation_district_city_mismatch' => 'The selected district does not belong to the selected city / province.',
             'validation_skill_required' => 'Please select a skill.',
             'validation_proficiency_required' => 'Please select minimum proficiency.',
+            'error_403_title' => 'Access forbidden',
+            'error_403_message' => 'Your current role does not have permission to open this page.',
+            'error_back_home' => 'Back Home',
         ],
         'vi' => [
             'home' => 'Trang chủ',
@@ -346,6 +349,9 @@ function t($key) {
             'validation_district_city_mismatch' => 'Quận / huyện được chọn không thuộc tỉnh / thành phố đã chọn.',
             'validation_skill_required' => 'Vui lòng chọn kỹ năng.',
             'validation_proficiency_required' => 'Vui lòng chọn mức thành thạo tối thiểu.',
+            'error_403_title' => 'Không được phép truy cập',
+            'error_403_message' => 'Vai trò hiện tại của bạn không có quyền mở trang này.',
+            'error_back_home' => 'Quay về trang chủ',
         ],
     ];
 
