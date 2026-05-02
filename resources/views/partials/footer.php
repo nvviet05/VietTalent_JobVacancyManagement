@@ -10,9 +10,5 @@
             <a href="<?= url('login') ?>"><?= e(t('login')) ?></a>
             <a href="<?= url('register') ?>"><?= e(t('register')) ?></a>
         </div>
-        <div>
-            <h4><?= e(t('scope_rules')) ?></h4>
-            <p><?= e(t('scope_rules_text')) ?></p>
-        </div>
     </div>
 </footer>
