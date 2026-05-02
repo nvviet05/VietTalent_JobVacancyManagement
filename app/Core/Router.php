@@ -27,7 +27,9 @@ class Router {
                 header('Location: ' . url('login'));
                 return;
             }
-            if (!in_array(Auth::user()['role'], $roles, true)) {
+            $user = Auth::user();
+            $userRole = $user['role'] ?? null;
+            if ($userRole === null || !in_array($userRole, $roles, true)) {
                 http_response_code(403);
                 require APP_ROOT . '/resources/views/errors/403.php';
                 return;

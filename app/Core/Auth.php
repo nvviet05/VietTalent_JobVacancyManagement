@@ -18,6 +18,7 @@ class Auth {
     }
 
     public static function isRole($role) {
-        return self::check() && self::user()['role'] === $role;
+        $user = self::user();
+        return $user !== null && isset($user['role']) && $user['role'] === $role;
     }
 }

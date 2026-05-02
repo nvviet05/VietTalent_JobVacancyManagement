@@ -111,7 +111,8 @@ class AuthController extends Controller {
     }
 
     private function redirectByRole() {
-        $role = Auth::user()['role'];
+        $user = Auth::user();
+        $role = $user['role'] ?? null;
         if ($role === 'admin') {
             $this->redirect('admin_dashboard');
         }
