@@ -1,86 +1,112 @@
-<section class="mb-4">
-    <a class="btn btn-outline-secondary btn-sm" href="<?= url('jobs') ?>">&larr; Back to Jobs</a>
+<section class="section">
+    <div class="container">
+        <a class="btn btn-outline btn-sm" href="<?= url('jobs') ?>">&larr; <?= e(t('back_to_jobs')) ?></a>
+
+        <div class="job-detail-layout">
+            <div class="job-detail-main">
+                <div class="card job-detail-card">
+                    <div class="job-detail-header">
+                        <div>
+                            <h1><?= e($job['job_title_name'] ?? '') ?></h1>
+                            <span class="job-detail-company"><?= e($job['company_name'] ?? '') ?></span>
+                        </div>
+                        <div class="job-detail-salary"><?= e($job['salary_range_label'] ?? t('negotiable')) ?></div>
+                    </div>
+
+                    <div class="job-detail-badges">
+                        <span class="meta-badge"><strong><?= e(t('location')) ?>:</strong> <?= e($job['city_name'] ?? '') ?><?= !empty($job['district_name']) ? ', ' . e($job['district_name']) : '' ?>, <?= e($job['country_name'] ?? '') ?></span>
+                        <span class="meta-badge"><strong><?= e(t('employment_type')) ?>:</strong> <?= e($job['employment_type_name'] ?? '') ?></span>
+                        <span class="meta-badge"><strong><?= e(t('work_arrangement')) ?>:</strong> <?= e($job['work_arrangement_name'] ?? '') ?></span>
+                        <span class="meta-badge"><strong><?= e(t('job_level')) ?>:</strong> <?= e($job['job_level_name'] ?? '') ?></span>
+                        <span class="meta-badge"><strong><?= e(t('job_category')) ?>:</strong> <?= e($job['job_category_name'] ?? '') ?></span>
+                        <span class="meta-badge"><strong><?= e(t('industry')) ?>:</strong> <?= e($job['industry_name'] ?? '') ?></span>
+                    </div>
+
+                    <?php if (!empty($skills)): ?>
+                        <div class="job-detail-section">
+                            <h2><?= e(t('required_skills')) ?></h2>
+                            <div class="skill-pill-wrap">
+                                <?php foreach ($skills as $sk): ?>
+                                    <span class="skill-pill"><?= e($sk['skill_name']) ?> <small>(<?= e($sk['proficiency_name']) ?>)</small></span>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="job-detail-section">
+                        <h2><?= e(t('responsibilities')) ?></h2>
+                        <div class="job-detail-text"><?= nl2br(e($job['responsibilities'] ?? '')) ?></div>
+                    </div>
+
+                    <div class="job-detail-section">
+                        <h2><?= e(t('required_qualifications')) ?></h2>
+                        <div class="job-detail-text"><?= nl2br(e($job['required_qualifications'] ?? '')) ?></div>
+                    </div>
+
+                    <?php if (!empty($job['preferred_skills'])): ?>
+                        <div class="job-detail-section">
+                            <h2><?= e(t('preferred_skills')) ?></h2>
+                            <div class="job-detail-text"><?= nl2br(e($job['preferred_skills'])) ?></div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($job['benefits'])): ?>
+                        <div class="job-detail-section">
+                            <h2><?= e(t('benefits')) ?></h2>
+                            <div class="job-detail-text"><?= nl2br(e($job['benefits'])) ?></div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($job['additional_notes'])): ?>
+                        <div class="job-detail-section">
+                            <h2><?= e(t('additional_notes')) ?></h2>
+                            <div class="job-detail-text"><?= nl2br(e($job['additional_notes'])) ?></div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <aside class="job-detail-sidebar">
+                <div class="card job-sidebar-card">
+                    <h2><?= e(t('company')) ?></h2>
+                    <p class="job-sidebar-company"><?= e($job['company_name'] ?? '') ?></p>
+                    <?php if (!empty($job['company_description'])): ?>
+                        <p class="job-sidebar-desc"><?= nl2br(e($job['company_description'])) ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($job['company_website'])): ?>
+                        <a class="btn btn-outline btn-sm" href="<?= e($job['company_website']) ?>" target="_blank" rel="noopener noreferrer"><?= e(t('visit_website')) ?></a>
+                    <?php endif; ?>
+                </div>
+
+                <div class="card job-sidebar-card">
+                    <h2><?= e(t('job_summary')) ?></h2>
+                    <dl class="job-summary-list">
+                        <dt><?= e(t('posted_date')) ?></dt>
+                        <dd><?= !empty($job['created_at']) ? e(date('M d, Y', strtotime($job['created_at']))) : 'N/A' ?></dd>
+
+                        <dt><?= e(t('number_of_openings')) ?></dt>
+                        <dd><?= e((string)($job['number_of_openings'] ?? 'N/A')) ?></dd>
+
+                        <dt><?= e(t('employment_type')) ?></dt>
+                        <dd><?= e($job['employment_type_name'] ?? 'N/A') ?></dd>
+
+                        <dt><?= e(t('work_arrangement')) ?></dt>
+                        <dd><?= e($job['work_arrangement_name'] ?? 'N/A') ?></dd>
+
+                        <dt><?= e(t('job_level')) ?></dt>
+                        <dd><?= e($job['job_level_name'] ?? 'N/A') ?></dd>
+
+                        <dt><?= e(t('salary_type')) ?></dt>
+                        <dd><?= e($job['salary_type_name'] ?? 'N/A') ?></dd>
+
+                        <dt><?= e(t('minimum_degree_level')) ?></dt>
+                        <dd><?= e($job['degree_level_name'] ?? 'N/A') ?></dd>
+
+                        <dt><?= e(t('minimum_years_of_experience')) ?></dt>
+                        <dd><?= e($job['experience_level_name'] ?? 'N/A') ?></dd>
+                    </dl>
+                </div>
+            </aside>
+        </div>
+    </div>
 </section>
-
-<div class="row g-4">
-    <div class="col-lg-8">
-        <div class="card border-0 shadow-sm p-4 mb-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-3">
-                <div>
-                    <h1 class="h2 fw-bold mb-2"><?= e($job['job_title_name'] ?? 'Job Detail') ?></h1>
-                    <div class="text-primary fw-semibold"><?= e($job['company_name'] ?? 'Company') ?></div>
-                </div>
-                <div class="text-success fw-bold bg-success bg-opacity-10 px-3 py-2 rounded">
-                    <?= e($job['salary_range_label'] ?? 'Negotiable') ?>
-                </div>
-            </div>
-
-            <div class="d-flex flex-wrap gap-2 mb-4">
-                <span class="badge bg-light text-dark border">Location: <?= e($job['city_name'] ?? 'N/A') ?></span>
-                <span class="badge bg-light text-dark border">Type: <?= e($job['employment_type_name'] ?? 'N/A') ?></span>
-                <span class="badge bg-light text-dark border">Work: <?= e($job['work_arrangement_name'] ?? 'N/A') ?></span>
-                <span class="badge bg-light text-dark border">Level: <?= e($job['job_level_name'] ?? 'N/A') ?></span>
-            </div>
-
-            <div class="mb-4">
-                <h2 class="h5 fw-bold">Responsibilities</h2>
-                <div class="text-muted"><?= nl2br(e($job['responsibilities'] ?? '')) ?></div>
-            </div>
-
-            <div class="mb-4">
-                <h2 class="h5 fw-bold">Required Qualifications</h2>
-                <div class="text-muted"><?= nl2br(e($job['required_qualifications'] ?? '')) ?></div>
-            </div>
-
-            <?php if (!empty($job['preferred_skills'])): ?>
-                <div class="mb-4">
-                    <h2 class="h5 fw-bold">Preferred Skills</h2>
-                    <div class="text-muted"><?= nl2br(e($job['preferred_skills'])) ?></div>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($job['benefits'])): ?>
-                <div class="mb-4">
-                    <h2 class="h5 fw-bold">Benefits</h2>
-                    <div class="text-muted"><?= nl2br(e($job['benefits'])) ?></div>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($job['additional_notes'])): ?>
-                <div>
-                    <h2 class="h5 fw-bold">Additional Notes</h2>
-                    <div class="text-muted"><?= nl2br(e($job['additional_notes'])) ?></div>
-                </div>
-            <?php endif; ?>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <div class="card border-0 shadow-sm p-4 mb-4">
-            <h2 class="h5 fw-bold mb-3">Company</h2>
-            <p class="fw-semibold mb-2"><?= e($job['company_name'] ?? 'Company') ?></p>
-            <?php if (!empty($job['company_description'])): ?>
-                <p class="text-muted small mb-3"><?= nl2br(e($job['company_description'])) ?></p>
-            <?php endif; ?>
-            <?php if (!empty($job['company_website'])): ?>
-                <a class="btn btn-outline-primary btn-sm" href="<?= e($job['company_website']) ?>" target="_blank" rel="noopener noreferrer">Visit Website</a>
-            <?php endif; ?>
-        </div>
-
-        <div class="card border-0 shadow-sm p-4">
-            <h2 class="h5 fw-bold mb-3">Job Summary</h2>
-            <dl class="mb-0">
-                <dt class="small text-muted">Posted Date</dt>
-                <dd class="mb-3"><?= !empty($job['created_at']) ? e(date('Y-m-d', strtotime($job['created_at']))) : 'N/A' ?></dd>
-                <dt class="small text-muted">Openings</dt>
-                <dd class="mb-3"><?= e((string)($job['number_of_openings'] ?? 'N/A')) ?></dd>
-                <dt class="small text-muted">Employment Type</dt>
-                <dd class="mb-3"><?= e($job['employment_type_name'] ?? 'N/A') ?></dd>
-                <dt class="small text-muted">Work Arrangement</dt>
-                <dd class="mb-3"><?= e($job['work_arrangement_name'] ?? 'N/A') ?></dd>
-                <dt class="small text-muted">Job Level</dt>
-                <dd class="mb-0"><?= e($job['job_level_name'] ?? 'N/A') ?></dd>
-            </dl>
-        </div>
-    </div>
-</div>

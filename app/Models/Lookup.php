@@ -106,6 +106,18 @@ class Lookup {
         );
     }
 
+    public function getCategoriesWithJobCount() {
+        return $this->db->fetchAll(
+            'SELECT jc.id, jc.name, COUNT(jv.id) AS job_count
+             FROM job_categories jc
+             LEFT JOIN job_vacancies jv ON jv.job_category_id = jc.id AND jv.status = ?
+             WHERE jc.status = ?
+             GROUP BY jc.id, jc.name
+             ORDER BY job_count DESC, jc.name ASC',
+            ['active', 'active']
+        );
+    }
+
     public function getActiveWorkArrangements() {
         return $this->getActiveOptions('work_arrangements');
     }

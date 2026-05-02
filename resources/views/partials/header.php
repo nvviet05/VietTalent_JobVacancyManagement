@@ -3,6 +3,7 @@
         <?php include APP_ROOT . '/resources/views/partials/brand-logo.php'; ?>
         <nav class="site-nav" data-mobile-nav>
             <a href="<?= url('home') ?>"><?= e(t('home')) ?></a>
+            <a href="<?= url('jobs') ?>"><?= e(t('browse_jobs')) ?></a>
             <?php if (Auth::check()): ?>
                 <?php if (Auth::isRole('admin')): ?>
                     <a href="<?= url('admin_dashboard') ?>"><?= e(t('dashboard')) ?></a>

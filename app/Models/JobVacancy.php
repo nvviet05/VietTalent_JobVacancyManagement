@@ -251,6 +251,189 @@ class JobVacancy {
         );
     }
 
+    public function getLatestActiveJobs($limit = 6) {
+        $limit = max(1, (int)$limit);
+        return $this->db->fetchAll(
+            "SELECT jv.id, jv.created_at,
+                    jt.name AS job_title_name,
+                    jc.name AS job_category_name,
+                    ep.company_name,
+                    co.name AS country_name,
+                    c.name AS city_name,
+                    d.name AS district_name,
+                    et.name AS employment_type_name,
+                    wa.name AS work_arrangement_name,
+                    sr.label AS salary_range_label
+             FROM job_vacancies jv
+             INNER JOIN job_titles jt ON jt.id = jv.job_title_id
+             INNER JOIN job_categories jc ON jc.id = jv.job_category_id
+             INNER JOIN employer_profiles ep ON ep.id = jv.employer_id
+             INNER JOIN countries co ON co.id = jv.country_id
+             INNER JOIN cities c ON c.id = jv.city_id
+             LEFT JOIN districts d ON d.id = jv.district_id
+             INNER JOIN employment_types et ON et.id = jv.employment_type_id
+             INNER JOIN work_arrangements wa ON wa.id = jv.work_arrangement_id
+             INNER JOIN salary_ranges sr ON sr.id = jv.salary_range_id
+             WHERE jv.status = 'active'
+             ORDER BY jv.created_at DESC, jv.id DESC
+             LIMIT {$limit}"
+        );
+    }
+
+    public function searchActiveJobs($filters = [], $sort = 'newest') {
+        $sql = 'SELECT jv.id, jv.created_at,
+                       jt.name AS job_title_name,
+                       jc.name AS job_category_name,
+                       ep.company_name,
+                       co.name AS country_name,
+                       c.name AS city_name,
+                       d.name AS district_name,
+                       et.name AS employment_type_name,
+                       wa.name AS work_arrangement_name,
+                       sr.label AS salary_range_label,
+                       sr.min_salary
+                FROM job_vacancies jv
+                INNER JOIN job_titles jt ON jt.id = jv.job_title_id
+                INNER JOIN job_categories jc ON jc.id = jv.job_category_id
+                INNER JOIN employer_profiles ep ON ep.id = jv.employer_id
+                INNER JOIN countries co ON co.id = jv.country_id
+                INNER JOIN cities c ON c.id = jv.city_id
+                LEFT JOIN districts d ON d.id = jv.district_id
+                INNER JOIN employment_types et ON et.id = jv.employment_type_id
+                INNER JOIN work_arrangements wa ON wa.id = jv.work_arrangement_id
+                INNER JOIN salary_ranges sr ON sr.id = jv.salary_range_id
+                WHERE jv.status = ?';
+
+        $params = ['active'];
+
+        if (!empty($filters['keyword'])) {
+            $kw = '%' . $filters['keyword'] . '%';
+            $sql .= ' AND (jt.name LIKE ? OR jv.responsibilities LIKE ? OR jv.required_qualifications LIKE ? OR jv.preferred_skills LIKE ? OR jv.additional_notes LIKE ?)';
+            array_push($params, $kw, $kw, $kw, $kw, $kw);
+        }
+
+        if (!empty($filters['category_id'])) {
+            $sql .= ' AND jv.job_category_id = ?';
+            $params[] = (int)$filters['category_id'];
+        }
+
+        if (!empty($filters['country_id'])) {
+            $sql .= ' AND jv.country_id = ?';
+            $params[] = (int)$filters['country_id'];
+        }
+
+        if (!empty($filters['city_id'])) {
+            $sql .= ' AND jv.city_id = ?';
+            $params[] = (int)$filters['city_id'];
+        }
+
+        if (!empty($filters['district_id'])) {
+            $sql .= ' AND jv.district_id = ?';
+            $params[] = (int)$filters['district_id'];
+        }
+
+        if (!empty($filters['employment_type_id'])) {
+            $sql .= ' AND jv.employment_type_id = ?';
+            $params[] = (int)$filters['employment_type_id'];
+        }
+
+        if (!empty($filters['job_level_id'])) {
+            $sql .= ' AND jv.job_level_id = ?';
+            $params[] = (int)$filters['job_level_id'];
+        }
+
+        if (!empty($filters['salary_range_id'])) {
+            $sql .= ' AND jv.salary_range_id = ?';
+            $params[] = (int)$filters['salary_range_id'];
+        }
+
+        if (!empty($filters['work_arrangement_id'])) {
+            $sql .= ' AND jv.work_arrangement_id = ?';
+            $params[] = (int)$filters['work_arrangement_id'];
+        }
+
+        if (!empty($filters['skill_id'])) {
+            $sql .= ' AND EXISTS (SELECT 1 FROM job_vacancy_skills jvs_filter WHERE jvs_filter.job_vacancy_id = jv.id AND jvs_filter.skill_id = ?)';
+            $params[] = (int)$filters['skill_id'];
+        }
+
+        switch ($sort) {
+            case 'salary_asc':
+                $sql .= ' ORDER BY sr.min_salary ASC, jv.created_at DESC';
+                break;
+            case 'salary_desc':
+                $sql .= ' ORDER BY sr.min_salary DESC, jv.created_at DESC';
+                break;
+            case 'title_asc':
+                $sql .= ' ORDER BY jt.name ASC, jv.created_at DESC';
+                break;
+            default:
+                $sql .= ' ORDER BY jv.created_at DESC, jv.id DESC';
+        }
+
+        return $this->db->fetchAll($sql, $params);
+    }
+
+    public function getActiveJobDetail($jobId) {
+        return $this->db->fetch(
+            'SELECT jv.*,
+                    jt.name AS job_title_name,
+                    jc.name AS job_category_name,
+                    et.name AS employment_type_name,
+                    i.name AS industry_name,
+                    jl.name AS job_level_name,
+                    ep.company_name,
+                    ep.company_website,
+                    ep.company_description,
+                    co.name AS country_name,
+                    c.name AS city_name,
+                    d.name AS district_name,
+                    wa.name AS work_arrangement_name,
+                    sr.label AS salary_range_label,
+                    st.name AS salary_type_name,
+                    dl.name AS degree_level_name,
+                    el.name AS experience_level_name
+             FROM job_vacancies jv
+             INNER JOIN job_titles jt ON jt.id = jv.job_title_id
+             INNER JOIN job_categories jc ON jc.id = jv.job_category_id
+             INNER JOIN employment_types et ON et.id = jv.employment_type_id
+             INNER JOIN industries i ON i.id = jv.industry_id
+             INNER JOIN job_levels jl ON jl.id = jv.job_level_id
+             INNER JOIN employer_profiles ep ON ep.id = jv.employer_id
+             INNER JOIN countries co ON co.id = jv.country_id
+             INNER JOIN cities c ON c.id = jv.city_id
+             LEFT JOIN districts d ON d.id = jv.district_id
+             INNER JOIN work_arrangements wa ON wa.id = jv.work_arrangement_id
+             INNER JOIN salary_ranges sr ON sr.id = jv.salary_range_id
+             INNER JOIN salary_types st ON st.id = jv.salary_type_id
+             INNER JOIN degree_levels dl ON dl.id = jv.degree_level_id
+             INNER JOIN experience_levels el ON el.id = jv.experience_level_id
+             WHERE jv.id = ? AND jv.status = ?',
+            [(int)$jobId, 'active']
+        );
+    }
+
+    public function getSkillsByJobIds($jobIds) {
+        if (empty($jobIds)) {
+            return [];
+        }
+        $placeholders = implode(',', array_fill(0, count($jobIds), '?'));
+        $rows = $this->db->fetchAll(
+            "SELECT jvs.job_vacancy_id, s.name AS skill_name, pl.name AS proficiency_name
+             FROM job_vacancy_skills jvs
+             INNER JOIN skills s ON s.id = jvs.skill_id
+             INNER JOIN proficiency_levels pl ON pl.id = jvs.proficiency_level_id
+             WHERE jvs.job_vacancy_id IN ({$placeholders})
+             ORDER BY s.name ASC",
+            array_map('intval', $jobIds)
+        );
+        $grouped = [];
+        foreach ($rows as $row) {
+            $grouped[$row['job_vacancy_id']][] = $row;
+        }
+        return $grouped;
+    }
+
     public function toggleStatus($jobId, $employerId) {
         $job = $this->findByIdAndEmployer($jobId, $employerId);
         if (!$job || $job['status'] === 'removed') {
