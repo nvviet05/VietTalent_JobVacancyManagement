@@ -17,6 +17,15 @@
             </select>
         </div>
         <div class="mb-3">
+            <label class="form-label small fw-bold"><?= e(t('country')) ?></label>
+            <select name="country_id" class="form-select">
+                <option value=""><?= e(t('all_countries')) ?></option>
+                <?php foreach ($countries ?? [] as $country): ?>
+                    <option value="<?= $country['id'] ?>" <?= ($_GET['country_id'] ?? '') == $country['id'] ? 'selected' : '' ?>><?= e($country['name']) ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="mb-3">
             <label class="form-label small fw-bold">City</label>
             <select name="city_id" class="form-select">
                 <option value="">All Cities</option>

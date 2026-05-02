@@ -37,6 +37,7 @@ require_once APP_ROOT . '/app/Controllers/AuthController.php';
 require_once APP_ROOT . '/app/Controllers/DashboardController.php';
 require_once APP_ROOT . '/app/Controllers/LanguageController.php';
 require_once APP_ROOT . '/app/Controllers/EmployerController.php';
+require_once APP_ROOT . '/app/Controllers/AdminController.php';
 
 
 // ====================================================================
@@ -87,6 +88,34 @@ $router->add('set_language', 'LanguageController', 'set');
 
 // Các Route cho Dashboard và Employer
 $router->add('admin_dashboard', 'DashboardController', 'admin', 'admin');
+$router->add('admin_jobs', 'AdminController', 'index', 'admin');
+$router->add('admin_job_view', 'AdminController', 'show', 'admin');
+$router->add('admin_job_set_status', 'AdminController', 'setStatus', 'admin');
+$router->add('admin_lookup', 'AdminController', 'lookupIndex', 'admin');
+$router->add('admin_lookup_create', 'AdminController', 'lookupCreate', 'admin');
+$router->add('admin_lookup_store', 'AdminController', 'lookupStore', 'admin');
+$router->add('admin_lookup_edit', 'AdminController', 'lookupEdit', 'admin');
+$router->add('admin_lookup_update', 'AdminController', 'lookupUpdate', 'admin');
+$router->add('admin_lookup_toggle_status', 'AdminController', 'lookupToggleStatus', 'admin');
+$router->add('admin_locations', 'AdminController', 'locationsIndex', 'admin');
+$router->add('admin_countries', 'AdminController', 'countriesIndex', 'admin');
+$router->add('admin_country_create', 'AdminController', 'countryCreate', 'admin');
+$router->add('admin_country_store', 'AdminController', 'countryStore', 'admin');
+$router->add('admin_country_edit', 'AdminController', 'countryEdit', 'admin');
+$router->add('admin_country_update', 'AdminController', 'countryUpdate', 'admin');
+$router->add('admin_country_toggle_status', 'AdminController', 'countryToggleStatus', 'admin');
+$router->add('admin_cities', 'AdminController', 'citiesIndex', 'admin');
+$router->add('admin_city_create', 'AdminController', 'cityCreate', 'admin');
+$router->add('admin_city_store', 'AdminController', 'cityStore', 'admin');
+$router->add('admin_city_edit', 'AdminController', 'cityEdit', 'admin');
+$router->add('admin_city_update', 'AdminController', 'cityUpdate', 'admin');
+$router->add('admin_city_toggle_status', 'AdminController', 'cityToggleStatus', 'admin');
+$router->add('admin_districts', 'AdminController', 'districtsIndex', 'admin');
+$router->add('admin_district_create', 'AdminController', 'districtCreate', 'admin');
+$router->add('admin_district_store', 'AdminController', 'districtStore', 'admin');
+$router->add('admin_district_edit', 'AdminController', 'districtEdit', 'admin');
+$router->add('admin_district_update', 'AdminController', 'districtUpdate', 'admin');
+$router->add('admin_district_toggle_status', 'AdminController', 'districtToggleStatus', 'admin');
 $router->add('employer_dashboard', 'DashboardController', 'employer', 'employer');
 $router->add('job_seeker_dashboard', 'DashboardController', 'jobSeeker', 'job_seeker');
 
