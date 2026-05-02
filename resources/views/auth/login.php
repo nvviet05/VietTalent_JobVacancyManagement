@@ -16,11 +16,6 @@
             </div>
             <h1><?= e(t('welcome_back')) ?></h1>
             <p><?= e(t('login_intro')) ?></p>
-            <ul class="check-list">
-                <li><?= e(t('secure_password')) ?></li>
-                <li><?= e(t('session_auth')) ?></li>
-                <li><?= e(t('role_redirect')) ?></li>
-            </ul>
         </section>
         <section class="auth-card">
             <h2><?= e(t('login')) ?></h2>
