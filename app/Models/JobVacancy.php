@@ -59,6 +59,90 @@ class JobVacancy {
         );
     }
 
+    public function getAllForAdmin() {
+        return $this->db->fetchAll(
+            'SELECT jv.id,
+                    jt.name AS job_title_name,
+                    jc.name AS job_category_name,
+                    ep.company_name,
+                    u.full_name AS employer_name,
+                    co.name AS country_name,
+                    c.name AS city_name,
+                    d.name AS district_name,
+                    wa.name AS work_arrangement_name,
+                    sr.label AS salary_range_label,
+                    jv.status,
+                    jv.created_at
+             FROM job_vacancies jv
+             INNER JOIN employer_profiles ep ON ep.id = jv.employer_id
+             INNER JOIN users u ON u.id = ep.user_id
+             INNER JOIN job_titles jt ON jt.id = jv.job_title_id
+             INNER JOIN job_categories jc ON jc.id = jv.job_category_id
+             INNER JOIN countries co ON co.id = jv.country_id
+             INNER JOIN cities c ON c.id = jv.city_id
+             LEFT JOIN districts d ON d.id = jv.district_id
+             INNER JOIN work_arrangements wa ON wa.id = jv.work_arrangement_id
+             INNER JOIN salary_ranges sr ON sr.id = jv.salary_range_id
+             ORDER BY jv.created_at DESC, jv.id DESC'
+        );
+    }
+
+    public function findById($jobId) {
+        return $this->db->fetch(
+            'SELECT * FROM job_vacancies WHERE id = ?',
+            [(int)$jobId]
+        );
+    }
+
+    public function getDetailForAdmin($jobId) {
+        return $this->db->fetch(
+            'SELECT jv.*,
+                    u.full_name AS employer_name,
+                    u.email AS employer_email,
+                    ep.company_name,
+                    ep.company_website,
+                    ep.company_description,
+                    jt.name AS job_title_name,
+                    jc.name AS job_category_name,
+                    et.name AS employment_type_name,
+                    i.name AS industry_name,
+                    jl.name AS job_level_name,
+                    co.name AS country_name,
+                    c.name AS city_name,
+                    d.name AS district_name,
+                    wa.name AS work_arrangement_name,
+                    sr.label AS salary_range_label,
+                    st.name AS salary_type_name,
+                    dl.name AS degree_level_name,
+                    el.name AS experience_level_name
+             FROM job_vacancies jv
+             INNER JOIN employer_profiles ep ON ep.id = jv.employer_id
+             INNER JOIN users u ON u.id = ep.user_id
+             INNER JOIN job_titles jt ON jt.id = jv.job_title_id
+             INNER JOIN job_categories jc ON jc.id = jv.job_category_id
+             INNER JOIN employment_types et ON et.id = jv.employment_type_id
+             INNER JOIN industries i ON i.id = jv.industry_id
+             INNER JOIN job_levels jl ON jl.id = jv.job_level_id
+             INNER JOIN countries co ON co.id = jv.country_id
+             INNER JOIN cities c ON c.id = jv.city_id
+             LEFT JOIN districts d ON d.id = jv.district_id
+             INNER JOIN work_arrangements wa ON wa.id = jv.work_arrangement_id
+             INNER JOIN salary_ranges sr ON sr.id = jv.salary_range_id
+             INNER JOIN salary_types st ON st.id = jv.salary_type_id
+             INNER JOIN degree_levels dl ON dl.id = jv.degree_level_id
+             INNER JOIN experience_levels el ON el.id = jv.experience_level_id
+             WHERE jv.id = ?',
+            [(int)$jobId]
+        );
+    }
+
+    public function setStatusByAdmin($jobId, $status) {
+        return $this->db->execute(
+            'UPDATE job_vacancies SET status = ? WHERE id = ?',
+            [$status, (int)$jobId]
+        );
+    }
+
     public function getRecentByEmployer($employerId, $limit = 5) {
         $limit = max(1, (int)$limit);
         return $this->db->fetchAll(

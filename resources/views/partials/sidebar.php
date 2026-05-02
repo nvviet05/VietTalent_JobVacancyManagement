@@ -10,7 +10,7 @@
         <?php if (($role ?? '') === 'admin'): ?>
             <a class="<?= ($activeNav ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= url('admin_dashboard') ?>"><?= e(t('admin_dashboard')) ?></a>
             <span><?= e(t('admin_quick_links')) ?></span>
-            <a href="<?= url('admin_jobs') ?>"><?= e(t('manage_job_postings')) ?></a>
+            <a class="<?= ($activeNav ?? '') === 'jobs' ? 'active' : '' ?>" href="<?= url('admin_jobs') ?>"><?= e(t('manage_job_postings')) ?></a>
             <a href="<?= url('admin_lookup', ['type' => 'job_categories']) ?>"><?= e(t('manage_job_categories')) ?></a>
             <a href="<?= url('admin_lookup', ['type' => 'job_titles']) ?>"><?= e(t('manage_job_titles')) ?></a>
             <a href="<?= url('admin_lookup', ['type' => 'skills']) ?>"><?= e(t('manage_skills')) ?></a>

@@ -37,6 +37,7 @@ require_once APP_ROOT . '/app/Controllers/AuthController.php';
 require_once APP_ROOT . '/app/Controllers/DashboardController.php';
 require_once APP_ROOT . '/app/Controllers/LanguageController.php';
 require_once APP_ROOT . '/app/Controllers/EmployerController.php';
+require_once APP_ROOT . '/app/Controllers/AdminController.php';
 
 
 // ====================================================================
@@ -87,6 +88,9 @@ $router->add('set_language', 'LanguageController', 'set');
 
 // Các Route cho Dashboard và Employer
 $router->add('admin_dashboard', 'DashboardController', 'admin', 'admin');
+$router->add('admin_jobs', 'AdminController', 'index', 'admin');
+$router->add('admin_job_view', 'AdminController', 'show', 'admin');
+$router->add('admin_job_set_status', 'AdminController', 'setStatus', 'admin');
 $router->add('employer_dashboard', 'DashboardController', 'employer', 'employer');
 $router->add('job_seeker_dashboard', 'DashboardController', 'jobSeeker', 'job_seeker');
 
