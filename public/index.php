@@ -51,6 +51,9 @@ $router->add('admin_district_store', 'AdminController', 'districtStore', 'admin'
 $router->add('admin_district_edit', 'AdminController', 'districtEdit', 'admin');
 $router->add('admin_district_update', 'AdminController', 'districtUpdate', 'admin');
 $router->add('admin_district_toggle_status', 'AdminController', 'districtToggleStatus', 'admin');
+$router->add('jobs', 'PublicJobController', 'index');
+$router->add('job_detail', 'PublicJobController', 'show');
+
 $router->add('employer_dashboard', 'DashboardController', 'employer', 'employer');
 $router->add('job_seeker_dashboard', 'DashboardController', 'jobSeeker', 'job_seeker');
 

@@ -5,7 +5,8 @@
             <p><?= e(t('footer_desc')) ?></p>
         </div>
         <div>
-            <h4><?= e(t('phase1')) ?></h4>
+            <h4><?= e(t('browse_jobs')) ?></h4>
+            <a href="<?= url('jobs') ?>"><?= e(t('all_jobs')) ?></a>
             <a href="<?= url('login') ?>"><?= e(t('login')) ?></a>
             <a href="<?= url('register') ?>"><?= e(t('register')) ?></a>
         </div>
