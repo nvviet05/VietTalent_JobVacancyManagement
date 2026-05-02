@@ -1,5 +1,5 @@
 <div class="dashboard-card">
     <span class="eyebrow"><?= e(t('employer_dashboard')) ?></span>
-    <h2><?= e(t('employer_shell_title')) ?></h2>
-    <p><?= e(t('employer_shell_text')) ?></p>
+    <h2><?= e(t('employer_dashboard')) ?></h2>
+    <p><?= e(t('employer_dashboard_intro')) ?></p>
 </div>

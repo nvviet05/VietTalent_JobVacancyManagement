@@ -16,11 +16,6 @@
             </div>
             <h1><?= e(t('create_your_account')) ?></h1>
             <p><?= e(t('register_intro')) ?></p>
-            <ul class="check-list">
-                <li><?= e(t('company_validation')) ?></li>
-                <li><?= e(t('email_unique')) ?></li>
-                <li><?= e(t('password_hashing')) ?></li>
-            </ul>
         </section>
         <section class="auth-card">
             <h2><?= e(t('register')) ?></h2>

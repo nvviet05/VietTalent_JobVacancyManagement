@@ -22,14 +22,12 @@
             <a class="<?= ($activeLookupType ?? '') === 'employment_types' ? 'active' : '' ?>" href="<?= url('admin_lookup', ['type' => 'employment_types']) ?>"><?= e(t('manage_employment_types')) ?></a>
             <a class="<?= ($activeLookupType ?? '') === 'job_levels' ? 'active' : '' ?>" href="<?= url('admin_lookup', ['type' => 'job_levels']) ?>"><?= e(t('manage_job_levels')) ?></a>
             <a class="<?= ($activeLookupType ?? '') === 'salary_ranges' ? 'active' : '' ?>" href="<?= url('admin_lookup', ['type' => 'salary_ranges']) ?>"><?= e(t('manage_salary_ranges')) ?></a>
-            <span><?= e(t('admin_phase_note')) ?></span>
         <?php elseif (($role ?? '') === 'employer'): ?>
             <a class="<?= ($activeNav ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= url('employer_dashboard') ?>"><?= e(t('employer_dashboard')) ?></a>
             <a class="<?= ($activeNav ?? '') === 'jobs' ? 'active' : '' ?>" href="<?= url('employer_jobs') ?>"><?= e(t('my_job_postings')) ?></a>
             <a class="<?= ($activeNav ?? '') === 'create_job' ? 'active' : '' ?>" href="<?= url('employer_job_create') ?>"><?= e(t('create_new_job')) ?></a>
         <?php else: ?>
             <a class="<?= ($activeNav ?? '') === 'dashboard' ? 'active' : '' ?>" href="<?= url('job_seeker_dashboard') ?>"><?= e(t('job_seeker_dashboard')) ?></a>
-            <span><?= e(t('job_seeker_phase_note')) ?></span>
         <?php endif; ?>
         <a href="<?= url('home') ?>"><?= e(t('back_to_site')) ?></a>
     </nav>

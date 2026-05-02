@@ -10,7 +10,7 @@
     <div class="error-card">
         <h1>404</h1>
         <h2>Page not found</h2>
-        <p>The requested route does not exist in the Phase 1 route table.</p>
+        <p>The page you are looking for could not be found.</p>
         <a class="btn btn-primary" href="<?= url('home') ?>">Back Home</a>
     </div>
 </body>

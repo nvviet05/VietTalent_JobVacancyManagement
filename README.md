@@ -61,7 +61,7 @@ The system supports three main use cases:
 ## Folder Structure
 
 ```text
-Job-Vacancy-Management/
+VietTalent_JobVacancyManagement/
 ├── app/
 │   ├── Core/          # Database, router, controller base classes, auth, validation
 │   ├── Controllers/   # Home, auth, employer, admin, dashboard, language, public jobs
@@ -96,13 +96,13 @@ Job-Vacancy-Management/
 
 ## How to Run with XAMPP
 
-1. Put the project in `D:\xampp\htdocs\Job-Vacancy-Management`
+1. Put the project in `C:\xampp\htdocs\VietTalent_JobVacancyManagement`
 2. Start Apache and MySQL in XAMPP.
 3. Import `database/schema.sql` and `database/seed.sql`.
 4. Open:
 
 ```text
-http://localhost/Job-Vacancy-Management/public/
+http://localhost/VietTalent_JobVacancyManagement/public/
 ```
 
 ## Default Accounts
@@ -122,13 +122,25 @@ The following demo accounts are defined in `database/seed.sql`.
 - Employer jobs: `?page=employer_jobs`
 - Employer create job: `?page=employer_job_create`
 - Public jobs: `?page=jobs`
-- Public job detail: `?page=jobs/detail&id={jobId}`
+- Public job detail: `?page=job_detail&id={jobId}`
 - Admin dashboard: `?page=admin_dashboard`
 - Admin jobs: `?page=admin_jobs`
 - Admin lookup management: `?page=admin_lookup&type=skills`
 - Admin countries: `?page=admin_countries`
 - Admin cities: `?page=admin_cities`
 - Admin districts: `?page=admin_districts`
+
+## Demo Flow
+
+1. Open `http://localhost/VietTalent_JobVacancyManagement/public/`
+2. Login as employer: `employer@viettalent.local` / `password`
+3. Go to Employer Dashboard → Create New Job → fill all fields → Save (set status to Active)
+4. Logout → Browse Jobs from the public page
+5. Use keyword search, category filter, location filter, and sort options to find the job
+6. Click View Detail to see the full job posting
+7. Login as admin: `admin@viettalent.local` / `password`
+8. Go to Admin Dashboard → Manage Job Postings → find the job → Set Removed
+9. Logout → Browse Jobs again → confirm the removed job no longer appears
 
 ## Team Contribution / Phase Contribution
 
