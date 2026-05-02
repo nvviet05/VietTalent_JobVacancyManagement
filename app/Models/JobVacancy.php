@@ -302,12 +302,13 @@ class JobVacancy {
     public function searchActiveJobs($filters = []) {
     // 1. Khởi tạo câu lệnh SQL cơ bản với điều kiện bắt buộc là status = 'active'
     $sql = "SELECT jv.*, jt.name as job_title_name, ep.company_name, c.name as city_name, 
-                   et.name as employment_type_name, sr.label as salary_range_label
+                   et.name as employment_type_name, wa.name as work_arrangement_name, sr.label as salary_range_label
             FROM job_vacancies jv
             JOIN job_titles jt ON jv.job_title_id = jt.id
             JOIN employer_profiles ep ON jv.employer_id = ep.id
             JOIN cities c ON jv.city_id = c.id
             JOIN employment_types et ON jv.employment_type_id = et.id
+            JOIN work_arrangements wa ON jv.work_arrangement_id = wa.id
             JOIN salary_ranges sr ON jv.salary_range_id = sr.id
             WHERE jv.status = 'active'";
 

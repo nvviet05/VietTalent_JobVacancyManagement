@@ -14,9 +14,9 @@
         </div>
     </div>
     <div class="mb-3 mt-2 small">
-        <span class="badge bg-light text-dark border me-1">📍 <?= e($job['city_name'] ?? 'N/A') ?></span>
-        <span class="badge bg-light text-dark border me-1">💼 <?= e($job['employment_type_name'] ?? 'N/A') ?></span>
-        <span class="badge bg-light text-dark border">🏢 <?= e($job['work_arrangement_name'] ?? 'N/A') ?></span>
+        <span class="badge bg-light text-dark border me-1">Location: <?= e($job['city_name'] ?? 'N/A') ?></span>
+        <span class="badge bg-light text-dark border me-1">Type: <?= e($job['employment_type_name'] ?? 'N/A') ?></span>
+        <span class="badge bg-light text-dark border">Work: <?= e($job['work_arrangement_name'] ?? 'N/A') ?></span>
     </div>
     <div class="d-flex justify-content-between align-items-center mt-auto border-top pt-3 text-muted small">
         <span>Posted: <?= !empty($job['created_at']) ? date('M d, Y', strtotime($job['created_at'])) : 'Recently' ?></span>

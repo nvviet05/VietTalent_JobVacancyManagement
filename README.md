@@ -1,8 +1,15 @@
-# VietTalent Job Vacancy Management
+# Job Vacancy Management & Job Search System / VietTalent
 
-Phase 1 foundation plus Phase 2 employer job vacancy management for the Job Vacancy Management & Job Search System assignment.
+## Project Overview
 
-## Tech Stack
+VietTalent is a PHP/MySQL web application for structured job vacancy management and public job search.
+
+The system supports three main use cases:
+- Employers manage their own job vacancies through a protected dashboard.
+- Job seekers and visitors browse active jobs, search, filter, sort, and view job details.
+- Administrators monitor the platform, manage job visibility, and maintain reference and location data.
+
+## Technologies Used
 
 - XAMPP
 - PHP
@@ -10,78 +17,150 @@ Phase 1 foundation plus Phase 2 employer job vacancy management for the Job Vaca
 - HTML
 - CSS
 - JavaScript
-- No frontend framework
 
-## Local URL
+## System Roles
 
-```txt
-http://localhost/VietTalent_JobVacancyManagement/public/
+- Employer
+- Job Seeker / Visitor
+- Administrator
+
+## Main Features
+
+### Employer
+
+- Register and login
+- Employer dashboard
+- Create job vacancy
+- Edit own job vacancy
+- View own job vacancy
+- Delete own job vacancy
+- Activate/deactivate own job vacancy
+- Dynamic required skills form
+- Employer ownership protection
+
+### Job Seeker / Visitor
+
+- View homepage
+- Browse active jobs
+- Keyword search
+- Multi-criteria filters
+- AND logic across filters
+- Sorting
+- View job detail
+- Read-only browsing, no apply workflow
+
+### Administrator
+
+- Admin dashboard
+- View all jobs
+- View job detail
+- Set job status to active, inactive, or removed
+- Manage lookup/reference data
+- Manage countries, cities, and districts
+
+## Folder Structure
+
+```text
+Job-Vacancy-Management/
+├── app/
+│   ├── Core/          # Database, router, controller base classes, auth, validation
+│   ├── Controllers/   # Home, auth, employer, admin, dashboard, language, public jobs
+│   ├── Helpers/       # URL, session, translation helpers
+│   └── Models/        # Job, lookup, profile, and relationship data access
+├── config/            # App and database configuration
+├── database/          # schema.sql and seed.sql
+├── docs/              # Database notes, test checklist, demo script
+├── public/
+│   ├── css/           # Public and dashboard styles
+│   ├── js/            # Public and employer form JavaScript
+│   └── index.php      # Front controller / entry point
+├── resources/
+│   └── views/         # Public, auth, employer, admin, partial, layout, and error views
+└── storage/           # Reserved local storage area
 ```
 
-## Setup
+## Database Setup
+
+- Schema file: `database/schema.sql`
+- Seed file: `database/seed.sql`
+- Configured database name: `viettalent_job_vacancy_db`
+
+### Import with phpMyAdmin
 
 1. Start Apache and MySQL in XAMPP.
-2. Create/import the database by running `database/schema.sql`.
-3. Load seed data by running `database/seed.sql`.
-4. Check database credentials in `config/database.php`.
-5. Open the local URL above.
+2. Open phpMyAdmin.
+3. Create a database named `viettalent_job_vacancy_db` if needed.
+4. Import `database/schema.sql`.
+5. Import `database/seed.sql`.
+6. Confirm `config/database.php` matches your local MySQL settings.
 
-## Seed Accounts
+## How to Run with XAMPP
 
-All seed accounts use password:
+1. Put the project in `D:\xampp\htdocs\Job-Vacancy-Management`
+2. Start Apache and MySQL in XAMPP.
+3. Import `database/schema.sql` and `database/seed.sql`.
+4. Open:
 
-```txt
-password
+```text
+http://localhost/Job-Vacancy-Management/public/
 ```
 
-- Admin: `admin@viettalent.local`
-- Employer: `employer@viettalent.local`
-- Job Seeker: `jobseeker@viettalent.local`
+## Default Accounts
 
-## Implemented Scope
+The following demo accounts are defined in `database/seed.sql`.
 
-- Required project folder structure
-- Public entry point at `public/index.php`
-- MVC-like core classes
-- Database configuration
-- Normalized schema and seed data
-- Login, register, logout
-- Password hashing and verification
-- Session authentication
-- Role-based dashboard redirects
-- Role guard with 403 handling
-- Base responsive UI/UX for public, auth, dashboard, 403, and 404 pages
-- Employer dashboard with company-scoped job statistics
-- Employer-only job vacancy create, view, edit, update, delete, and activate/deactivate actions
-- Dynamic required skills form with server-side validation for 1 to 5 skills and duplicate prevention
+- Admin: `admin@viettalent.local` / `password`
+- Employer: `employer@viettalent.local` / `password`
+- Job Seeker: `jobseeker@viettalent.local` / `password`
 
-## Employer Phase 2 Routes
+## Main Routes
 
-- `?page=employer_dashboard`
-- `?page=employer_jobs`
-- `?page=employer_job_create`
-- `?page=employer_job_store`
-- `?page=employer_job_view&id={jobId}`
-- `?page=employer_job_edit&id={jobId}`
-- `?page=employer_job_update&id={jobId}`
-- `?page=employer_job_delete&id={jobId}`
-- `?page=employer_job_toggle_status&id={jobId}`
+- Home: `/public/`
+- Login: `?page=login`
+- Register: `?page=register`
+- Employer dashboard: `?page=employer_dashboard`
+- Employer jobs: `?page=employer_jobs`
+- Employer create job: `?page=employer_job_create`
+- Public jobs: `?page=jobs`
+- Public job detail: `?page=jobs/detail&id={jobId}`
+- Admin dashboard: `?page=admin_dashboard`
+- Admin jobs: `?page=admin_jobs`
+- Admin lookup management: `?page=admin_lookup&type=skills`
+- Admin countries: `?page=admin_countries`
+- Admin cities: `?page=admin_cities`
+- Admin districts: `?page=admin_districts`
 
-## Employer Workflow
+## Team Contribution / Phase Contribution
 
-1. Login with an employer account.
-2. Open `?page=employer_dashboard` to review job stats and recent postings.
-3. Open `?page=employer_job_create` to create a vacancy with structured location, salary, and skill data.
-4. Add 1 to 5 required skills and submit the form.
-5. Review the posting from `?page=employer_jobs` or `?page=employer_job_view&id={jobId}`.
-6. Edit, activate/deactivate, or delete only your own postings.
+- Phase 1: Foundation, authentication, role guards, base UI/UX, schema, seed data
+- Phase 2: Employer vacancy management and required skills workflow
+- Phase 3: Public job search, filtering, sorting, and job detail
+- Phase 4: Admin dashboard, admin job management, lookup/location management, and final documentation
 
-## Out Of Scope
+## Limitations / Out of Scope
 
-- Public job search/filter/sort
-- Public job detail browsing workflow
-- Admin job moderation
-- Admin lookup/location management
-- CV creation/search
-- Apply job workflow
-- Recommendation or matching workflow
+The following features are intentionally not implemented:
+
+- No CV creation
+- No CV search
+- No job application workflow
+- No recommendation or matching algorithm
+- No email notification workflow
+- No chat
+- No payment workflow
+
+## Git Workflow
+
+The project is organized phase by phase. A practical workflow for submission is to keep commits grouped by feature area, for example:
+
+- Phase 1 foundation and auth
+- Phase 2 employer features
+- Phase 3 public search and detail
+- Phase 4 admin features and documentation
+
+## Notes
+
+- Public job pages show only jobs with status `active`.
+- Admin "remove" is implemented as status `removed`, not a hard delete.
+- Structured location is stored through `countries`, `cities`, and `districts`.
+- Required skills are stored in a many-to-many relationship through `job_vacancy_skills`.
