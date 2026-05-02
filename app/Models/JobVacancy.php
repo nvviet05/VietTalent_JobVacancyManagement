@@ -29,6 +29,36 @@ class JobVacancy {
         );
     }
 
+    public function countAllJobs() {
+        return $this->db->count('SELECT COUNT(*) FROM job_vacancies');
+    }
+
+    public function countJobsByStatus($status) {
+        return $this->db->count(
+            'SELECT COUNT(*) FROM job_vacancies WHERE status = ?',
+            [$status]
+        );
+    }
+
+    public function getRecentForAdmin($limit = 6) {
+        $limit = max(1, (int)$limit);
+
+        return $this->db->fetchAll(
+            "SELECT jv.id,
+                    jt.name AS job_title_name,
+                    ep.company_name,
+                    u.full_name AS employer_name,
+                    jv.status,
+                    jv.created_at
+             FROM job_vacancies jv
+             INNER JOIN job_titles jt ON jt.id = jv.job_title_id
+             INNER JOIN employer_profiles ep ON ep.id = jv.employer_id
+             INNER JOIN users u ON u.id = ep.user_id
+             ORDER BY jv.created_at DESC, jv.id DESC
+             LIMIT {$limit}"
+        );
+    }
+
     public function getRecentByEmployer($employerId, $limit = 5) {
         $limit = max(1, (int)$limit);
         return $this->db->fetchAll(
