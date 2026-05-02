@@ -1,9 +1,16 @@
 <?php
-class HomeController extends Controller {
+class HomeController {
     public function index() {
-        $this->view('layouts/main', [
-            'title' => t('hero_eyebrow'),
-            'content' => 'dashboard/home',
-        ]);
+        $jobModel = new JobVacancy();
+        
+        $data = [
+            'title' => 'Home - Career Portal',
+            'content' => 'home', 
+            'jobs' => $jobModel->getLatestActive(6)
+        ];
+
+        // Unpack variables and load layout directly
+        extract($data);
+        require APP_ROOT . '/resources/views/layouts/main.php';
     }
 }
