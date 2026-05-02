@@ -108,4 +108,15 @@ class Lookup {
             ['active']
         );
     }
+    public function getAllActive($table) {
+    $allowed = ['job_categories', 'cities', 'skills', 'employment_types', 'job_levels', 'salary_ranges', 'work_arrangements'];
+    if (!in_array($table, $allowed)) return [];
+    
+    // Determine the correct column to sort by
+    // Your schema uses 'label' for salary_ranges, and 'name' for others
+    $sortColumn = ($table === 'salary_ranges') ? 'label' : 'name';
+    
+    // Your schema uses 'status' as the column name
+    return $this->db->fetchAll("SELECT * FROM {$table} WHERE status = 'active' ORDER BY {$sortColumn} ASC");
+}
 }
