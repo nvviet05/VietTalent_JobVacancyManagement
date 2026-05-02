@@ -329,37 +329,43 @@ class JobVacancy {
         $params['category_id'] = $filters['category_id'];
     }
 
-    // 4. AND City condition
+    // 4. AND Country condition
+    if (!empty($filters['country_id'])) {
+        $sql .= " AND jv.country_id = :country_id";
+        $params['country_id'] = $filters['country_id'];
+    }
+
+    // 5. AND City condition
     if (!empty($filters['city_id'])) {
         $sql .= " AND jv.city_id = :city_id";
         $params['city_id'] = $filters['city_id'];
     }
 
-    // 5. AND Employment Type condition
+    // 6. AND Employment Type condition
     if (!empty($filters['employment_type_id'])) {
         $sql .= " AND jv.employment_type_id = :employment_type_id";
         $params['employment_type_id'] = $filters['employment_type_id'];
     }
 
-    // 6. AND Job Level condition
+    // 7. AND Job Level condition
     if (!empty($filters['job_level_id'])) {
         $sql .= " AND jv.job_level_id = :job_level_id";
         $params['job_level_id'] = $filters['job_level_id'];
     }
 
-    // 7. AND Salary Range condition
+    // 8. AND Salary Range condition
     if (!empty($filters['salary_range_id'])) {
         $sql .= " AND jv.salary_range_id = :salary_range_id";
         $params['salary_range_id'] = $filters['salary_range_id'];
     }
 
-    // 8. AND Work Arrangement condition
+    // 9. AND Work Arrangement condition
     if (!empty($filters['work_arrangement_id'])) {
         $sql .= " AND jv.work_arrangement_id = :work_arrangement_id";
         $params['work_arrangement_id'] = $filters['work_arrangement_id'];
     }
 
-    // 9. AND Skill condition (Sử dụng EXISTS để kiểm tra bảng quan hệ n-n)
+    // 10. AND Skill condition (Sử dụng EXISTS để kiểm tra bảng quan hệ n-n)
     if (!empty($filters['skill_id'])) {
         $sql .= " AND EXISTS (
             SELECT 1 FROM job_vacancy_skills jvs 
@@ -368,7 +374,7 @@ class JobVacancy {
         $params['skill_id'] = $filters['skill_id'];
     }
 
-    // 10. Xử lý sắp xếp (Sorting)
+    // 11. Xử lý sắp xếp (Sorting)
     $sort = $filters['sort'] ?? 'newest';
     
     switch ($sort) {

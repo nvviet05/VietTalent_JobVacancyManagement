@@ -12,6 +12,7 @@ class JobController {
         $filters = [
             'keyword' => $_GET['keyword'] ?? '',
             'category_id' => $_GET['category_id'] ?? '',
+            'country_id' => $_GET['country_id'] ?? '',
             'city_id' => $_GET['city_id'] ?? '',
             'skill_id' => $_GET['skill_id'] ?? '',
             'employment_type_id' => $_GET['employment_type_id'] ?? '',
@@ -26,7 +27,8 @@ class JobController {
             'content' => 'jobs/index',
             'jobs' => $this->jobModel->searchActiveJobs($filters),
             'categories' => $this->lookupModel->getAllActive('job_categories'),
-            'cities' => $this->lookupModel->getAllActive('cities'),
+            'countries' => $this->lookupModel->getActiveCountries(),
+            'cities' => $this->lookupModel->getActiveCities(),
             'skills' => $this->lookupModel->getAllActive('skills'),
             'employmentTypes' => $this->lookupModel->getAllActive('employment_types'),
             'jobLevels' => $this->lookupModel->getAllActive('job_levels'),

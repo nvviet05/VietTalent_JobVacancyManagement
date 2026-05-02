@@ -51,7 +51,7 @@ class DashboardController extends Controller {
                 [
                     'label' => t('manage_locations'),
                     'description' => t('manage_locations_intro'),
-                    'url' => url('admin_locations'),
+                    'url' => url('admin_countries'),
                 ],
                 [
                     'label' => t('manage_employment_types'),

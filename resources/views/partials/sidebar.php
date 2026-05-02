@@ -15,7 +15,10 @@
             <a class="<?= ($activeLookupType ?? '') === 'job_titles' ? 'active' : '' ?>" href="<?= url('admin_lookup', ['type' => 'job_titles']) ?>"><?= e(t('manage_job_titles')) ?></a>
             <a class="<?= ($activeLookupType ?? '') === 'skills' ? 'active' : '' ?>" href="<?= url('admin_lookup', ['type' => 'skills']) ?>"><?= e(t('manage_skills')) ?></a>
             <a class="<?= ($activeLookupType ?? '') === 'industries' ? 'active' : '' ?>" href="<?= url('admin_lookup', ['type' => 'industries']) ?>"><?= e(t('manage_industries')) ?></a>
-            <a href="<?= url('admin_locations') ?>"><?= e(t('manage_locations')) ?></a>
+            <a class="<?= ($activeNav ?? '') === 'locations' ? 'active' : '' ?>" href="<?= url('admin_locations') ?>"><?= e(t('manage_locations')) ?></a>
+            <a class="<?= ($activeLocationType ?? '') === 'countries' ? 'active' : '' ?>" href="<?= url('admin_countries') ?>"><?= e(t('manage_countries')) ?></a>
+            <a class="<?= ($activeLocationType ?? '') === 'cities' ? 'active' : '' ?>" href="<?= url('admin_cities') ?>"><?= e(t('manage_cities')) ?></a>
+            <a class="<?= ($activeLocationType ?? '') === 'districts' ? 'active' : '' ?>" href="<?= url('admin_districts') ?>"><?= e(t('manage_districts')) ?></a>
             <a class="<?= ($activeLookupType ?? '') === 'employment_types' ? 'active' : '' ?>" href="<?= url('admin_lookup', ['type' => 'employment_types']) ?>"><?= e(t('manage_employment_types')) ?></a>
             <a class="<?= ($activeLookupType ?? '') === 'job_levels' ? 'active' : '' ?>" href="<?= url('admin_lookup', ['type' => 'job_levels']) ?>"><?= e(t('manage_job_levels')) ?></a>
             <a class="<?= ($activeLookupType ?? '') === 'salary_ranges' ? 'active' : '' ?>" href="<?= url('admin_lookup', ['type' => 'salary_ranges']) ?>"><?= e(t('manage_salary_ranges')) ?></a>
