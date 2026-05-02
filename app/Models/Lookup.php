@@ -579,17 +579,4 @@ class Lookup {
             ['active']
         );
     }
-
-    public function getAllActive($table) {
-        $allowed = ['job_categories', 'countries', 'cities', 'skills', 'employment_types', 'job_levels', 'salary_ranges', 'work_arrangements'];
-        if (!in_array($table, $allowed, true)) {
-            return [];
-        }
-
-        $sortColumn = $table === 'salary_ranges' ? 'label' : 'name';
-
-        return $this->db->fetchAll(
-            "SELECT * FROM {$table} WHERE status = 'active' ORDER BY {$sortColumn} ASC"
-        );
-    }
 }
