@@ -559,6 +559,23 @@ function t($key) {
         'posted_date' => 'Posted Date',
         'visit_website' => 'Visit Website',
         'negotiable' => 'Negotiable',
+        // Forgot password / new auth flow
+        'forgot_password_link' => 'Forgot your password?',
+        'forgot_password_title' => 'Reset your password',
+        'forgot_password_intro' => 'Enter the email address associated with your VietTalent account and we will generate a one-time reset link.',
+        'send_reset_link' => 'Send reset link',
+        'back_to_login' => 'Back to login',
+        'reset_link_sent' => 'Check your email',
+        'reset_link_sent_intro' => 'If an account exists for the address below, a one-time reset link has been generated for:',
+        'demo_mode' => 'Demo mode',
+        'demo_reset_note' => 'Email is not configured in this demo, so the reset link is shown directly below. In production this would be sent to the user inbox only.',
+        'reset_password_title' => 'Choose a new password',
+        'reset_password_intro' => 'Set a new password for the account:',
+        'new_password' => 'New password',
+        'confirm_new_password' => 'Confirm new password',
+        'reset_password_action' => 'Update password',
+        // Locations / store branches
+        'locations_nav' => 'Locations',
     ]);
 
     $translations['vi'] = array_merge($translations['vi'], [
@@ -740,6 +757,23 @@ function t($key) {
         'posted_date' => 'Ngày Đăng',
         'visit_website' => 'Xem Website',
         'negotiable' => 'Thương lượng',
+        // Forgot password / luồng auth mới
+        'forgot_password_link' => 'Quên mật khẩu?',
+        'forgot_password_title' => 'Đặt lại mật khẩu',
+        'forgot_password_intro' => 'Nhập email tài khoản VietTalent để nhận đường dẫn đặt lại mật khẩu một lần.',
+        'send_reset_link' => 'Gửi đường dẫn',
+        'back_to_login' => 'Quay lại đăng nhập',
+        'reset_link_sent' => 'Kiểm tra email của bạn',
+        'reset_link_sent_intro' => 'Nếu tồn tại tài khoản với email dưới đây, một đường dẫn đặt lại mật khẩu đã được tạo cho:',
+        'demo_mode' => 'Chế độ demo',
+        'demo_reset_note' => 'Demo này chưa cấu hình email, nên đường dẫn được hiển thị ngay bên dưới. Ở production, link sẽ chỉ được gửi vào hộp thư người dùng.',
+        'reset_password_title' => 'Chọn mật khẩu mới',
+        'reset_password_intro' => 'Đặt mật khẩu mới cho tài khoản:',
+        'new_password' => 'Mật khẩu mới',
+        'confirm_new_password' => 'Xác nhận mật khẩu mới',
+        'reset_password_action' => 'Cập nhật mật khẩu',
+        // Văn phòng / địa điểm
+        'locations_nav' => 'Văn phòng',
     ]);
 
     $lang = currentLang();

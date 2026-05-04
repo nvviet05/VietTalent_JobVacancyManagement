@@ -4,6 +4,8 @@ CREATE DATABASE IF NOT EXISTS viettalent_job_vacancy_db
 
 USE viettalent_job_vacancy_db;
 
+DROP TABLE IF EXISTS password_resets;
+DROP TABLE IF EXISTS store_locations;
 DROP TABLE IF EXISTS job_vacancy_skills;
 DROP TABLE IF EXISTS job_vacancies;
 DROP TABLE IF EXISTS job_seeker_profiles;
@@ -201,4 +203,32 @@ CREATE TABLE job_vacancy_skills (
   CONSTRAINT fk_jvs_job FOREIGN KEY (job_vacancy_id) REFERENCES job_vacancies(id) ON DELETE CASCADE,
   CONSTRAINT fk_jvs_skill FOREIGN KEY (skill_id) REFERENCES skills(id),
   CONSTRAINT fk_jvs_proficiency FOREIGN KEY (proficiency_level_id) REFERENCES proficiency_levels(id)
+) ENGINE=InnoDB;
+
+-- Password reset tokens (Forgot Password feature, criterion #7).
+CREATE TABLE password_resets (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  token_hash CHAR(64) NOT NULL UNIQUE,
+  expires_at DATETIME NOT NULL,
+  used_at DATETIME NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_pwreset_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- VietTalent physical store / branch locations (Google Maps page, criterion #6).
+CREATE TABLE store_locations (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(160) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  city_id INT UNSIGNED NULL,
+  phone VARCHAR(40) NULL,
+  email VARCHAR(160) NULL,
+  hours VARCHAR(120) NULL,
+  latitude DECIMAL(10,7) NULL,
+  longitude DECIMAL(10,7) NULL,
+  map_query VARCHAR(255) NOT NULL,
+  status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_store_city FOREIGN KEY (city_id) REFERENCES cities(id)
 ) ENGINE=InnoDB;

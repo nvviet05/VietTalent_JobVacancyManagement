@@ -14,6 +14,13 @@ class Lookup {
         return $this->getActiveOptions('job_categories');
     }
 
+    public function getActiveJobCategoryById($id) {
+        return $this->db->fetch(
+            "SELECT id, name FROM job_categories WHERE id = ? AND status = 'active'",
+            [(int)$id]
+        );
+    }
+
     public function getActiveIndustries() {
         return $this->getActiveOptions('industries');
     }

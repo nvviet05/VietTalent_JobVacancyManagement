@@ -4,6 +4,7 @@
         <nav class="site-nav" data-mobile-nav>
             <a href="<?= url('home') ?>"><?= e(t('home')) ?></a>
             <a href="<?= url('jobs') ?>"><?= e(t('browse_jobs')) ?></a>
+            <a href="<?= url('locations') ?>"><?= e(t('locations_nav')) ?></a>
             <?php if (Auth::check()): ?>
                 <?php if (Auth::isRole('admin')): ?>
                     <a href="<?= url('admin_dashboard') ?>"><?= e(t('dashboard')) ?></a>
