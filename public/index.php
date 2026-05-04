@@ -52,7 +52,13 @@ $router->add('admin_district_edit', 'AdminController', 'districtEdit', 'admin');
 $router->add('admin_district_update', 'AdminController', 'districtUpdate', 'admin');
 $router->add('admin_district_toggle_status', 'AdminController', 'districtToggleStatus', 'admin');
 $router->add('jobs', 'PublicJobController', 'index');
+$router->add('jobs_search', 'PublicJobController', 'search');
 $router->add('job_detail', 'PublicJobController', 'show');
+$router->add('locations', 'HomeController', 'locations');
+$router->add('forgot_password', 'AuthController', 'forgotForm');
+$router->add('forgot_password_submit', 'AuthController', 'forgotSubmit');
+$router->add('reset_password', 'AuthController', 'resetForm');
+$router->add('reset_password_submit', 'AuthController', 'resetSubmit');
 
 $router->add('employer_dashboard', 'DashboardController', 'employer', 'employer');
 $router->add('job_seeker_dashboard', 'DashboardController', 'jobSeeker', 'job_seeker');
@@ -70,5 +76,8 @@ $router->add('employer_job_edit', 'EmployerController', 'edit', 'employer');
 $router->add('employer_job_update', 'EmployerController', 'update', 'employer');
 $router->add('employer_job_delete', 'EmployerController', 'delete', 'employer');
 $router->add('employer_job_toggle_status', 'EmployerController', 'toggleStatus', 'employer');
+
+$router->add('sitemap', 'HomeController', 'sitemap');
+$router->add('robots', 'HomeController', 'robots');
 
 $router->dispatch();

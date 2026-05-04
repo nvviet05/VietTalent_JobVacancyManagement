@@ -110,6 +110,95 @@ class AuthController extends Controller {
         $this->redirect('home');
     }
 
+    /* ---------- Forgot / Reset password ---------- */
+
+    public function forgotForm() {
+        if (Auth::check()) {
+            $this->redirectByRole();
+        }
+        $this->view('auth/forgot');
+        clearOldInput();
+    }
+
+    public function forgotSubmit() {
+        $email = trim($_POST['email'] ?? '');
+        $validator = new Validator($_POST);
+        $validator->required('email', 'Email')->email('email', 'Email');
+        if ($validator->fails()) {
+            setOldInput($_POST);
+            setValidationErrors($validator->errors());
+            $this->redirect('forgot_password');
+        }
+
+        $userModel = new User();
+        $user = $userModel->findByEmail($email);
+
+        // Always send the user to a generic confirmation screen, regardless
+        // of whether the email exists, so we don't leak account existence.
+        $resetUrl = null;
+        if ($user && $user['status'] === 'active') {
+            $token   = $userModel->createPasswordResetToken($user['id'], 30);
+            $resetUrl = url('reset_password', ['token' => $token]);
+        }
+
+        $this->view('layouts/main', [
+            'title'    => 'Password reset link',
+            'content'  => 'auth/forgot_sent',
+            'email'    => $email,
+            'resetUrl' => $resetUrl,
+        ]);
+    }
+
+    public function resetForm() {
+        if (Auth::check()) {
+            $this->redirectByRole();
+        }
+        $token = trim($_GET['token'] ?? '');
+        $userModel = new User();
+        $row = $token ? $userModel->findValidResetToken($token) : null;
+        if (!$row) {
+            $this->setFlash('error', 'The password reset link is invalid or has expired.');
+            $this->redirect('forgot_password');
+        }
+        $this->view('layouts/main', [
+            'title'   => 'Choose a new password',
+            'content' => 'auth/reset',
+            'token'   => $token,
+            'email'   => $row['email'],
+        ]);
+        clearOldInput();
+    }
+
+    public function resetSubmit() {
+        $token = trim($_POST['token'] ?? '');
+        $userModel = new User();
+        $row = $token ? $userModel->findValidResetToken($token) : null;
+        if (!$row) {
+            $this->setFlash('error', 'The password reset link is invalid or has expired.');
+            $this->redirect('forgot_password');
+        }
+
+        $validator = new Validator($_POST);
+        $validator
+            ->required('password', 'Password')
+            ->minLength('password', 6, 'Password')
+            ->required('password_confirm', 'Confirm password')
+            ->match('password', 'password_confirm', 'Confirm password');
+
+        if ($validator->fails()) {
+            setOldInput($_POST);
+            setValidationErrors($validator->errors());
+            $this->redirect('reset_password', ['token' => $token]);
+        }
+
+        $userModel->updatePassword($row['user_id'], password_hash($_POST['password'], PASSWORD_DEFAULT));
+        $userModel->markResetTokenUsed($row['id']);
+        clearOldInput();
+
+        $this->setFlash('success', 'Your password has been updated. Please log in.');
+        $this->redirect('login');
+    }
+
     private function redirectByRole() {
         $user = Auth::user();
         $role = $user['role'] ?? null;

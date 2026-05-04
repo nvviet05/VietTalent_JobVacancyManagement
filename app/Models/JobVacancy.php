@@ -280,7 +280,49 @@ class JobVacancy {
         );
     }
 
-    public function searchActiveJobs($filters = [], $sort = 'newest') {
+    /**
+     * Build the WHERE clause + parameter array for an active-job search.
+     * Returns [string $where, array $params].
+     */
+    private function buildSearchWhere($filters = []) {
+        $where  = ['jv.status = ?'];
+        $params = ['active'];
+
+        if (!empty($filters['keyword'])) {
+            $kw = '%' . $filters['keyword'] . '%';
+            $where[] = '(jt.name LIKE ? OR jv.responsibilities LIKE ? OR jv.required_qualifications LIKE ? OR jv.preferred_skills LIKE ? OR jv.additional_notes LIKE ?)';
+            array_push($params, $kw, $kw, $kw, $kw, $kw);
+        }
+        if (!empty($filters['category_id']))         { $where[] = 'jv.job_category_id = ?';      $params[] = (int)$filters['category_id']; }
+        if (!empty($filters['country_id']))          { $where[] = 'jv.country_id = ?';           $params[] = (int)$filters['country_id']; }
+        if (!empty($filters['city_id']))             { $where[] = 'jv.city_id = ?';              $params[] = (int)$filters['city_id']; }
+        if (!empty($filters['district_id']))         { $where[] = 'jv.district_id = ?';          $params[] = (int)$filters['district_id']; }
+        if (!empty($filters['employment_type_id']))  { $where[] = 'jv.employment_type_id = ?';   $params[] = (int)$filters['employment_type_id']; }
+        if (!empty($filters['job_level_id']))        { $where[] = 'jv.job_level_id = ?';         $params[] = (int)$filters['job_level_id']; }
+        if (!empty($filters['salary_range_id']))     { $where[] = 'jv.salary_range_id = ?';      $params[] = (int)$filters['salary_range_id']; }
+        if (!empty($filters['work_arrangement_id'])) { $where[] = 'jv.work_arrangement_id = ?';  $params[] = (int)$filters['work_arrangement_id']; }
+        if (!empty($filters['skill_id'])) {
+            $where[]  = 'EXISTS (SELECT 1 FROM job_vacancy_skills jvs_filter WHERE jvs_filter.job_vacancy_id = jv.id AND jvs_filter.skill_id = ?)';
+            $params[] = (int)$filters['skill_id'];
+        }
+
+        return [implode(' AND ', $where), $params];
+    }
+
+    public function countActiveJobs($filters = []) {
+        list($where, $params) = $this->buildSearchWhere($filters);
+        return $this->db->count(
+            'SELECT COUNT(*)
+               FROM job_vacancies jv
+               INNER JOIN job_titles jt ON jt.id = jv.job_title_id
+              WHERE ' . $where,
+            $params
+        );
+    }
+
+    public function searchActiveJobs($filters = [], $sort = 'newest', $limit = null, $offset = 0) {
+        list($where, $params) = $this->buildSearchWhere($filters);
+
         $sql = 'SELECT jv.id, jv.created_at,
                        jt.name AS job_title_name,
                        jc.name AS job_category_name,
@@ -302,60 +344,7 @@ class JobVacancy {
                 INNER JOIN employment_types et ON et.id = jv.employment_type_id
                 INNER JOIN work_arrangements wa ON wa.id = jv.work_arrangement_id
                 INNER JOIN salary_ranges sr ON sr.id = jv.salary_range_id
-                WHERE jv.status = ?';
-
-        $params = ['active'];
-
-        if (!empty($filters['keyword'])) {
-            $kw = '%' . $filters['keyword'] . '%';
-            $sql .= ' AND (jt.name LIKE ? OR jv.responsibilities LIKE ? OR jv.required_qualifications LIKE ? OR jv.preferred_skills LIKE ? OR jv.additional_notes LIKE ?)';
-            array_push($params, $kw, $kw, $kw, $kw, $kw);
-        }
-
-        if (!empty($filters['category_id'])) {
-            $sql .= ' AND jv.job_category_id = ?';
-            $params[] = (int)$filters['category_id'];
-        }
-
-        if (!empty($filters['country_id'])) {
-            $sql .= ' AND jv.country_id = ?';
-            $params[] = (int)$filters['country_id'];
-        }
-
-        if (!empty($filters['city_id'])) {
-            $sql .= ' AND jv.city_id = ?';
-            $params[] = (int)$filters['city_id'];
-        }
-
-        if (!empty($filters['district_id'])) {
-            $sql .= ' AND jv.district_id = ?';
-            $params[] = (int)$filters['district_id'];
-        }
-
-        if (!empty($filters['employment_type_id'])) {
-            $sql .= ' AND jv.employment_type_id = ?';
-            $params[] = (int)$filters['employment_type_id'];
-        }
-
-        if (!empty($filters['job_level_id'])) {
-            $sql .= ' AND jv.job_level_id = ?';
-            $params[] = (int)$filters['job_level_id'];
-        }
-
-        if (!empty($filters['salary_range_id'])) {
-            $sql .= ' AND jv.salary_range_id = ?';
-            $params[] = (int)$filters['salary_range_id'];
-        }
-
-        if (!empty($filters['work_arrangement_id'])) {
-            $sql .= ' AND jv.work_arrangement_id = ?';
-            $params[] = (int)$filters['work_arrangement_id'];
-        }
-
-        if (!empty($filters['skill_id'])) {
-            $sql .= ' AND EXISTS (SELECT 1 FROM job_vacancy_skills jvs_filter WHERE jvs_filter.job_vacancy_id = jv.id AND jvs_filter.skill_id = ?)';
-            $params[] = (int)$filters['skill_id'];
-        }
+                WHERE ' . $where;
 
         switch ($sort) {
             case 'salary_asc':
@@ -369,6 +358,14 @@ class JobVacancy {
                 break;
             default:
                 $sql .= ' ORDER BY jv.created_at DESC, jv.id DESC';
+        }
+
+        if ($limit !== null) {
+            $limit  = max(1, (int)$limit);
+            $offset = max(0, (int)$offset);
+            // LIMIT / OFFSET inlined as integers (already cast) so PDO doesn't
+            // try to bind them as strings, which MySQL refuses.
+            $sql .= " LIMIT {$limit} OFFSET {$offset}";
         }
 
         return $this->db->fetchAll($sql, $params);
